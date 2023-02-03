@@ -23,8 +23,19 @@ const ProjectForm = ({ onAddProject }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    onAddProject(formData);
+
+    fetch("http://localhost:4000/projects", {
+      method: "POST",
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then((response) => response.json())
+      .then((newProject) => {
+        console.log(newProject)
+        onAddProject(newProject);
+      });
     setFormData(initialFormState);
   }
 
@@ -75,9 +86,9 @@ const ProjectForm = ({ onAddProject }) => {
         />
 
         <label htmlFor="image">Screenshot</label>
-        <input 
-          type="text" 
-          id="image" 
+        <input
+          type="text"
+          id="image"
           name="image"
           value={formData.image}
           onChange={handleOnChange}
